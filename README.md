@@ -3,6 +3,31 @@ JavaAPI4BMECatXML
 
 Java API for on the BMECat specification based XML content using JAXB and JSR-303 Validation API
 
+Maven:
+
+	<dependency>
+	  <groupId>org.omnaest.bmecat</groupId>
+	  <artifactId>JavaAPI4BMECatXML</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	
+	
+	[user home]/.m2/settings.xml:
+	
+	<repositories>  
+	  <repository>    
+	    <id>sonatype-nexus-snapshots</id>    
+	    <name>Sonatype Nexus Snapshots</name>    
+	    <url>https://oss.sonatype.org/content/repositories/snapshots</url>    
+	    <releases>      
+	      <enabled>false</enabled>    
+	    </releases>    
+	    <snapshots>      
+	      <enabled>true</enabled>    
+	    </snapshots>  
+	  </repository>
+	</repositories>
+
 Simple code example:
 
     //   
