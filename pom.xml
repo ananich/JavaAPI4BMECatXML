@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.omnaest.bmecat</groupId>
+    <artifactId>JavaAPI4BMECatXML</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.omnaest.utils</groupId>
+            <artifactId>utils-apl-derived-core</artifactId>
+            <version>0.1.15-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.3.0.Final</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <target>1.6</target>
+                    <source>1.6</source>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <scm>
+        <connection>git://github.com/omnaest/JavaAPI4BMECatXML.git</connection>
+        <developerConnection>git://github.com/omnaest/JavaAPI4BMECatXML.git</developerConnection>
+        <url>https://github.com/omnaest/JavaAPI4BMECatXML</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0 or later</name>
+            <url>http://www.spdx.org/licenses/GPL-3.0+</url>
+        </license>
+    </licenses>
+</project>
