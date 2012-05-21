@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlValue;
 import org.omnaest.api4bmecatxml.bmecat12.manager.BMECat12Manager;
 import org.omnaest.api4bmecatxml.bmecat12.model.BMECat12.TBase.CatalogGroupSystem.CatalogStructure;
 import org.omnaest.api4bmecatxml.bmecat12.model.BMECat12.TBase.ClassificationSystem.ClassificationGroups.ClassificationGroup;
+import org.omnaest.api4bmecatxml.bmecat12.utils.CloningHelper;
 
 /**
  * Model based on the BMECat 1.2.1 specification
@@ -47,26 +48,29 @@ import org.omnaest.api4bmecatxml.bmecat12.model.BMECat12.TBase.ClassificationSys
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BMECat12
 {
+  /* ********************************************** Constants ********************************************** */
+  public static final String NAMESPACE       = "http://www.bmecat.org/bmecat/1.2/bmecat_new_catalog";
   /* ********************************************** Variables ********************************************** */
   @NotNull
   @Valid
   @XmlElement(name = "HEADER")
-  private Header          header          = null;
+  private Header             header          = null;
   
   @Valid
   @XmlElement(name = "T_NEW_CATALOG")
-  private TNewCatalog     tNewCatalog     = null;
+  private TNewCatalog        tNewCatalog     = null;
   
   @Valid
   @XmlElement(name = "T_UPDATE_PRODUCTS")
-  private TUpdateProducts tUpdateProducts = null;
+  private TUpdateProducts    tUpdateProducts = null;
   
   @Valid
   @XmlElement(name = "T_UPDATE_PRICES")
-  private TUpdatePrices   tUpdatePrices   = null;
+  private TUpdatePrices      tUpdatePrices   = null;
   
   /* ********************************************** Classes/Interfaces ********************************************** */
   
+  @XmlRootElement(name = "HEADER")
   @XmlAccessorType(XmlAccessType.FIELD)
   public static class Header
   {
@@ -228,6 +232,11 @@ public class BMECat12
           return builder.toString();
         }
         
+        public DateTime clone()
+        {
+          return CloningHelper.clone( this );
+        }
+        
         public String getDate()
         {
           return this.date;
@@ -263,6 +272,7 @@ public class BMECat12
         
       }
       
+      /* ********************************************** Methods ********************************************** */
       @Override
       public String toString()
       {
@@ -287,6 +297,11 @@ public class BMECat12
         builder.append( this.priceFlagList );
         builder.append( "]" );
         return builder.toString();
+      }
+      
+      public Catalog clone()
+      {
+        return CloningHelper.clone( this );
       }
       
       public String getLanguage()
@@ -1339,6 +1354,11 @@ public class BMECat12
       //
       return this;
     }
+    
+    public Header clone()
+    {
+      return CloningHelper.clone( this );
+    }
   }
   
   @XmlAccessorType(XmlAccessType.FIELD)
@@ -1346,6 +1366,7 @@ public class BMECat12
   {
     /* ********************************************** Classes/Interfaces ********************************************** */
     
+    @XmlRootElement(name = "FEATURE_SYSTEM")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class FeatureSystem
     {
@@ -1581,12 +1602,30 @@ public class BMECat12
       
       public List<FeatureGroup> getFeatureGroupList()
       {
+        if ( this.featureGroupList == null )
+        {
+          this.featureGroupList = new ArrayList<BMECat12.TBase.FeatureSystem.FeatureGroup>();
+        }
         return this.featureGroupList;
       }
       
       public FeatureSystem setFeatureGroupList( List<FeatureGroup> featureGroupList )
       {
         this.featureGroupList = featureGroupList;
+        return this;
+      }
+      
+      /**
+       * @param featureGroup
+       *          {@link FeatureGroup}
+       * @return this
+       */
+      public FeatureSystem add( FeatureGroup featureGroup )
+      {
+        if ( featureGroup != null )
+        {
+          this.getFeatureGroupList().add( featureGroup );
+        }
         return this;
       }
       
@@ -1606,6 +1645,7 @@ public class BMECat12
       
     }
     
+    @XmlRootElement(name = "CLASSIFICATION_SYSTEM")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class ClassificationSystem
     {
@@ -2773,6 +2813,7 @@ public class BMECat12
       }
     }
     
+    @XmlRootElement(name = "CATALOG_GROUP_SYSTEM")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class CatalogGroupSystem
     {
@@ -2796,6 +2837,7 @@ public class BMECat12
       
       /* ********************************************** Classes/Interfaces ********************************************** */
       
+      @XmlRootElement(name = "CATALOG_STRUCTURE")
       @XmlAccessorType(XmlAccessType.FIELD)
       public static class CatalogStructure
       {
@@ -3141,6 +3183,7 @@ public class BMECat12
       }
     }
     
+    @XmlRootElement(name = "ARTICLE")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Article
     {
@@ -3436,6 +3479,11 @@ public class BMECat12
         public String getManufacturerName()
         {
           return this.manufacturerName;
+        }
+        
+        public ArticleDetails clone()
+        {
+          return CloningHelper.clone( this );
         }
         
         @Override
@@ -3823,6 +3871,12 @@ public class BMECat12
               private String supplierAidSupplement = null;
               
               /* ********************************************** Methods ********************************************** */
+              
+              public Variant clone()
+              {
+                return CloningHelper.clone( this );
+              }
+              
               public String getValue()
               {
                 return this.value;
@@ -3899,6 +3953,18 @@ public class BMECat12
               this.order = order;
               return this;
             }
+            
+            public Variants clone()
+            {
+              return CloningHelper.clone( this );
+            }
+          }
+          
+          /* ********************************************** Methods ********************************************** */
+          
+          public Feature clone()
+          {
+            return CloningHelper.clone( this );
           }
           
           @Override
@@ -4024,6 +4090,11 @@ public class BMECat12
         }
         
         /* ********************************************** Methods ********************************************** */
+        
+        public ArticleFeatures clone()
+        {
+          return CloningHelper.clone( this );
+        }
         
         /**
          * @param classificationSystem
@@ -4339,6 +4410,11 @@ public class BMECat12
             return this.lowerBound;
           }
           
+          public ArticlePrice clone()
+          {
+            return CloningHelper.clone( this );
+          }
+          
           @Override
           public String toString()
           {
@@ -4364,6 +4440,12 @@ public class BMECat12
           public ArticlePrice setPriceType( String priceType )
           {
             this.priceType = priceType;
+            return this;
+          }
+          
+          public ArticlePrice setPriceType( PriceType priceType )
+          {
+            this.priceType = priceType != null ? priceType.name() : null;
             return this;
           }
           
@@ -4897,8 +4979,14 @@ public class BMECat12
         }
         return this;
       }
+      
+      public Article clone()
+      {
+        return CloningHelper.clone( this );
+      }
     }
     
+    @XmlRootElement(name = "ARTICLE_TO_CATALOGGROUP_MAP")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class ArticleToCatalogGroupMap
     {
@@ -5027,6 +5115,11 @@ public class BMECat12
         
         /* ********************************************** Methods ********************************************** */
         
+        public MIME clone()
+        {
+          return CloningHelper.clone( this );
+        }
+        
         public String getMimeType()
         {
           return this.mimeType;
@@ -5125,6 +5218,11 @@ public class BMECat12
         return this.mimeList;
       }
       
+      public MIMEInfo clone()
+      {
+        return CloningHelper.clone( this );
+      }
+      
       @Override
       public String toString()
       {
@@ -5191,6 +5289,11 @@ public class BMECat12
     private List<ArticleToCatalogGroupMap> articleToCatalogGroupMapList = null;
     
     /* ********************************************** Methods ********************************************** */
+    
+    public TNewCatalog clone()
+    {
+      return CloningHelper.clone( this );
+    }
     
     @Override
     public String toString()
@@ -5588,5 +5691,10 @@ public class BMECat12
   {
     this.tUpdatePrices = tUpdatePrices;
     return this;
+  }
+  
+  public BMECat12 clone()
+  {
+    return CloningHelper.clone( this );
   }
 }

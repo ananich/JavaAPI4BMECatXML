@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.bmecat.org/bmecat/1.2/bmecat_new_catalog", elementFormDefault = XmlNsForm.QUALIFIED, attributeFormDefault = XmlNsForm.UNSET)
+@javax.xml.bind.annotation.XmlSchema(namespace = BMECat12.NAMESPACE, elementFormDefault = XmlNsForm.QUALIFIED, attributeFormDefault = XmlNsForm.UNSET)
 package org.omnaest.api4bmecatxml.bmecat12.model;
 
 import javax.xml.bind.annotation.XmlNsForm;
