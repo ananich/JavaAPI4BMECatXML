@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.omnaest.api4bmecatxml.bmecat12.manager.BMECat12Manager;
 import org.omnaest.api4bmecatxml.bmecat12.manager.BMECat12Manager.StreamFactory.SFArticleToCatalogGroupMap;
@@ -252,11 +253,12 @@ public class BMECat12Test
   }
   
   @Test
+  @Ignore("Long running performance test")
   public void testIteratorFactory()
   {
     //
     final DurationCapture durationCapture = DurationCapture.newInstance();
-    final int numberTo = 100;
+    final int numberTo = 100000;
     
     //   
     BMECat12 bmeCat12 = null;
