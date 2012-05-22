@@ -69,6 +69,7 @@ import org.omnaest.utils.operation.foreach.Range;
 import org.omnaest.utils.structure.collection.CollectionUtils;
 import org.omnaest.utils.structure.collection.list.ListUtils;
 import org.omnaest.utils.structure.container.ByteArrayContainer;
+import org.omnaest.utils.time.DurationCapture;
 
 /**
  * @see BMECat12
@@ -253,99 +254,111 @@ public class BMECat12Test
   @Test
   public void testIteratorFactory()
   {
+    //
+    final DurationCapture durationCapture = DurationCapture.newInstance();
+    final int numberTo = 100;
+    
     //   
-    final Header header = new Header().setBuyer( new Buyer().setAddress( new Address().setType( Address.Type.buyer )
-                                                                                      .setName( "name" )
-                                                                                      .setContact( "contact" ) )
-                                                            .setBuyerId( new BuyerId().setType( BuyerId.Type.buyer_specific )
-                                                                                      .setValue( "buyer id" ) )
-                                                            .setBuyerName( "buyer name" ) )
-                                      .setCatalog( new Catalog().setCatalogId( "Catalog id 01" )
-                                                                .setCatalogName( "Catalog 1" )
-                                                                .setCatalogVersion( "001.001" )
-                                                                .setCurrency( "EUR" )
-                                                                .setLanguage( "de" )
-                                                                .addTerritory( "sjflsjflkjskjflkjsf" )
-                                                                .add( new PriceFlag().setType( PriceFlag.Type.incl_packing )
-                                                                                     .setValue( true ) )
-                                                                .setDateTime( new Catalog.DateTime().setDate( "2012-01-01" )
-                                                                                                    .setTime( "08:00:00" )
-                                                                                                    .setTimezone( "GMT +1:00" ) ) )
-                                      .setSupplier( new Supplier().setSupplierName( "supplier" )
-                                                                  .add( new SupplierId().setType( SupplierId.Type.buyer_specific )
-                                                                                        .setValue( "supplier id" ) )
-                                                                  .setAddress( new Address().setType( Address.Type.supplier )
-                                                                                            .setCity( "city" )
-                                                                                            .setName( "name" )
-                                                                                            .setStreet( "street" ) ) );
-    
-    //
-    final FeatureSystem featureSystem = new FeatureSystem().setFeatureSystemName( "feature system 1" )
-                                                           .add( new FeatureGroup().setFeatureGroupId( "feature group id" )
-                                                                                   .setFeatureGroupName( "feature group name" ) );
-    
-    //    
-    final ClassificationGroup classificationGroupRoot = new ClassificationGroup().setClassificationGroupId( "01-00-00-00" )
-                                                                                 .setClassificationGroupName( "Root" );
-    final ClassificationGroup classificationGroupFirstNode = new ClassificationGroup().setClassificationGroupId( "01-01-00-00" )
-                                                                                      .setClassificationGroupName( "First node" )
-                                                                                      .linkAsChildToClassificationGroup( classificationGroupRoot );
-    final ClassificationGroups classificationGroups = new ClassificationGroups().add( classificationGroupRoot )
-                                                                                .add( classificationGroupFirstNode );
-    final ClassificationSystemFeatureTemplates classificationSystemFeatureTemplates = new ClassificationSystemFeatureTemplates();
-    classificationSystemFeatureTemplates.add( new ClassificationSystemFeatureTemplate().setId( "xyz" ).setName( "name xyz" ) )
-                                        .add( new ClassificationSystemFeatureTemplate().setId( "abc" ).setName( "name abc" ) );
-    final ClassificationSystem classificationSystem = new ClassificationSystem().setClassificationSystemName( "ECLASS-6.1" )
-                                                                                .setClassificationSystemVersion( "6.1" )
-                                                                                .setClassificationGroups( classificationGroups )
-                                                                                .setClassificationSystemFeatureTemplates( classificationSystemFeatureTemplates );
-    
-    //
-    final CatalogGroupSystem catalogGroupSystem = new CatalogGroupSystem().setGroupSystemId( "system id" )
-                                                                          .setGroupSystemName( "group system name" );
-    CatalogStructure catalogStructureRoot = new CatalogStructure().setGroupId( "01-00-00-00" )
-                                                                  .linkAsRootToCatalogGroupSystem( catalogGroupSystem );
-    
-    //
-    final TNewCatalog tNewCatalog = new TNewCatalog().setCatalogGroupSystem( catalogGroupSystem )
-                                                     .add( classificationSystem )
-                                                     .add( featureSystem );
-    
-    //
+    BMECat12 bmeCat12 = null;
+    final String intervalKeyGenerateModel = "Generate model";
+    durationCapture.startTimeMeasurement( intervalKeyGenerateModel );
     {
       //
-      CatalogStructure catalogStructureNode = new CatalogStructure().setGroupId( "01-01-00-00" )
-                                                                    .linkAsChildToCatalogStructure( catalogGroupSystem,
-                                                                                                    catalogStructureRoot );
+      final Header header = new Header().setBuyer( new Buyer().setAddress( new Address().setType( Address.Type.buyer )
+                                                                                        .setName( "name" )
+                                                                                        .setContact( "contact" ) )
+                                                              .setBuyerId( new BuyerId().setType( BuyerId.Type.buyer_specific )
+                                                                                        .setValue( "buyer id" ) )
+                                                              .setBuyerName( "buyer name" ) )
+                                        .setCatalog( new Catalog().setCatalogId( "Catalog id 01" )
+                                                                  .setCatalogName( "Catalog 1" )
+                                                                  .setCatalogVersion( "001.001" )
+                                                                  .setCurrency( "EUR" )
+                                                                  .setLanguage( "de" )
+                                                                  .addTerritory( "sjflsjflkjskjflkjsf" )
+                                                                  .add( new PriceFlag().setType( PriceFlag.Type.incl_packing )
+                                                                                       .setValue( true ) )
+                                                                  .setDateTime( new Catalog.DateTime().setDate( "2012-01-01" )
+                                                                                                      .setTime( "08:00:00" )
+                                                                                                      .setTimezone( "GMT +1:00" ) ) )
+                                        .setSupplier( new Supplier().setSupplierName( "supplier" )
+                                                                    .add( new SupplierId().setType( SupplierId.Type.buyer_specific )
+                                                                                          .setValue( "supplier id" ) )
+                                                                    .setAddress( new Address().setType( Address.Type.supplier )
+                                                                                              .setCity( "city" )
+                                                                                              .setName( "name" )
+                                                                                              .setStreet( "street" ) ) );
       
+      //
+      final FeatureSystem featureSystem = new FeatureSystem().setFeatureSystemName( "feature system 1" )
+                                                             .add( new FeatureGroup().setFeatureGroupId( "feature group id" )
+                                                                                     .setFeatureGroupName( "feature group name" ) );
+      
+      //    
+      final ClassificationGroup classificationGroupRoot = new ClassificationGroup().setClassificationGroupId( "01-00-00-00" )
+                                                                                   .setClassificationGroupName( "Root" );
+      final ClassificationGroup classificationGroupFirstNode = new ClassificationGroup().setClassificationGroupId( "01-01-00-00" )
+                                                                                        .setClassificationGroupName( "First node" )
+                                                                                        .linkAsChildToClassificationGroup( classificationGroupRoot );
+      final ClassificationGroups classificationGroups = new ClassificationGroups().add( classificationGroupRoot )
+                                                                                  .add( classificationGroupFirstNode );
+      final ClassificationSystemFeatureTemplates classificationSystemFeatureTemplates = new ClassificationSystemFeatureTemplates();
+      classificationSystemFeatureTemplates.add( new ClassificationSystemFeatureTemplate().setId( "xyz" ).setName( "name xyz" ) )
+                                          .add( new ClassificationSystemFeatureTemplate().setId( "abc" ).setName( "name abc" ) );
+      final ClassificationSystem classificationSystem = new ClassificationSystem().setClassificationSystemName( "ECLASS-6.1" )
+                                                                                  .setClassificationSystemVersion( "6.1" )
+                                                                                  .setClassificationGroups( classificationGroups )
+                                                                                  .setClassificationSystemFeatureTemplates( classificationSystemFeatureTemplates );
+      
+      //
+      final CatalogGroupSystem catalogGroupSystem = new CatalogGroupSystem().setGroupSystemId( "system id" )
+                                                                            .setGroupSystemName( "group system name" );
+      CatalogStructure catalogStructureRoot = new CatalogStructure().setGroupId( "01-00-00-00" )
+                                                                    .linkAsRootToCatalogGroupSystem( catalogGroupSystem );
+      
+      //
+      final TNewCatalog tNewCatalog = new TNewCatalog().setCatalogGroupSystem( catalogGroupSystem )
+                                                       .add( classificationSystem )
+                                                       .add( featureSystem );
+      
+      //
       {
         //
-        CatalogStructure catalogStructure = new CatalogStructure().setGroupId( "01-01-01-00" )
-                                                                  .linkAsChildToCatalogStructure( catalogGroupSystem,
-                                                                                                  catalogStructureNode );
+        CatalogStructure catalogStructureNode = new CatalogStructure().setGroupId( "01-01-00-00" )
+                                                                      .linkAsChildToCatalogStructure( catalogGroupSystem,
+                                                                                                      catalogStructureRoot );
         
-        for ( long counter : new Range( 1, 100 ) )
         {
-          tNewCatalog.add( new Article().setSupplierAid( "" + counter )
-                                        .setArticleDetails( new ArticleDetails().setDescriptionShort( "short description "
-                                                                                                          + counter )
-                                                                                .setDescriptionLong( "description long "
-                                                                                                         + counter )
-                                                                                .setManufacturerName( "manufacturer " + counter ) )
-                                        .add( new ArticlePriceDetails().add( new ArticlePrice() ) )
-                                        .linkToCatalogStructure( tNewCatalog, catalogStructure ) );
+          //
+          CatalogStructure catalogStructure = new CatalogStructure().setGroupId( "01-01-01-00" )
+                                                                    .linkAsChildToCatalogStructure( catalogGroupSystem,
+                                                                                                    catalogStructureNode );
+          
+          for ( long counter : new Range( 1, numberTo ) )
+          {
+            tNewCatalog.add( new Article().setSupplierAid( "" + counter )
+                                          .setArticleDetails( new ArticleDetails().setDescriptionShort( "short description "
+                                                                                                            + counter )
+                                                                                  .setDescriptionLong( "description long "
+                                                                                                           + counter )
+                                                                                  .setManufacturerName( "manufacturer " + counter ) )
+                                          .add( new ArticlePriceDetails().add( new ArticlePrice() ) )
+                                          .linkToCatalogStructure( tNewCatalog, catalogStructure ) );
+          }
         }
       }
+      
+      //
+      bmeCat12 = new BMECat12().setHeader( header ).setTNewCatalog( tNewCatalog );
+      
+      //
+      Set<ConstraintViolation<BMECat12>> contraintViolationSet = BMECat12Manager.validate( bmeCat12 );
+      assertNotNull( contraintViolationSet );
+      System.out.println( contraintViolationSet );
+      assertEquals( 0, contraintViolationSet.size() );
+      
     }
-    
-    //
-    BMECat12 bmeCat12 = new BMECat12().setHeader( header ).setTNewCatalog( tNewCatalog );
-    
-    //
-    Set<ConstraintViolation<BMECat12>> contraintViolationSet = BMECat12Manager.validate( bmeCat12 );
-    assertNotNull( contraintViolationSet );
-    System.out.println( contraintViolationSet );
-    assertEquals( 0, contraintViolationSet.size() );
+    durationCapture.stopTimeMeasurement( intervalKeyGenerateModel );
     
     //
     final ByteArrayContainer byteArrayContainer = new ByteArrayContainer();
@@ -353,39 +366,53 @@ public class BMECat12Test
     BMECat12Manager.storeTo( outputStream, bmeCat12 );
     
     //
-    final SFHeader sfHeader = BMECat12Manager.newStreamFactory( byteArrayContainer.getInputStream(),
-                                                                new ExceptionHandlerEPrintStackTrace() );
-    assertNotNull( sfHeader.getHeader() );
+    final String intervalKeyParseInput = "Parse generated input";
+    durationCapture.startTimeMeasurement( intervalKeyParseInput );
+    {
+      //
+      final SFHeader sfHeader = BMECat12Manager.newStreamFactory( byteArrayContainer.getInputStream(),
+                                                                  new ExceptionHandlerEPrintStackTrace() );
+      assertNotNull( sfHeader.getHeader() );
+      
+      //
+      final SFFeatureSystem sfFeatureSystem = sfHeader.featureSystem();
+      Iterator<FeatureSystem> featureSystemIterator = sfFeatureSystem.newFeatureSystemIterator();
+      assertNotNull( featureSystemIterator );
+      assertTrue( featureSystemIterator.hasNext() );
+      
+      //
+      final SFClassificationSystem sfClassificationSystem = sfFeatureSystem.classificationSystem();
+      Iterator<ClassificationSystem> classificationSystemIterator = sfClassificationSystem.newClassificationSystemIterator();
+      assertNotNull( classificationSystemIterator );
+      assertTrue( classificationSystemIterator.hasNext() );
+      
+      //
+      final SFCatalogGroupSystem sfCatalogGroupSystem = sfClassificationSystem.catalogGroupSystem();
+      assertNotNull( sfCatalogGroupSystem.getCatalogGroupSystem() );
+      
+      //  
+      final SFArticles sfArticles;
+      final String intervalKeyArticles = "articles";
+      durationCapture.startTimeMeasurement( intervalKeyArticles );
+      {
+        sfArticles = sfCatalogGroupSystem.articles();
+        Iterator<Article> articleIterator = sfArticles.newArticleIterator();
+        assertNotNull( articleIterator );
+        List<Article> articleList = ListUtils.valueOf( articleIterator );
+        assertEquals( numberTo, articleList.size() );
+      }
+      durationCapture.stopTimeMeasurement( intervalKeyArticles );
+      
+      //
+      final SFArticleToCatalogGroupMap sfArticleToCatalogGroupMap = sfArticles.articleToCatalogGroupMap();
+      Iterator<ArticleToCatalogGroupMap> articleToCatalogGroupMapIterator = sfArticleToCatalogGroupMap.newArticleToCatalogGroupMapIterator();
+      assertNotNull( articleToCatalogGroupMapIterator );
+      assertTrue( articleToCatalogGroupMapIterator.hasNext() );
+      sfArticleToCatalogGroupMap.close();
+    }
+    durationCapture.stopTimeMeasurement( intervalKeyParseInput );
     
     //
-    final SFFeatureSystem sfFeatureSystem = sfHeader.featureSystem();
-    Iterator<FeatureSystem> featureSystemIterator = sfFeatureSystem.newFeatureSystemIterator();
-    assertNotNull( featureSystemIterator );
-    assertTrue( featureSystemIterator.hasNext() );
-    
-    //
-    final SFClassificationSystem sfClassificationSystem = sfFeatureSystem.classificationSystem();
-    Iterator<ClassificationSystem> classificationSystemIterator = sfClassificationSystem.newClassificationSystemIterator();
-    assertNotNull( classificationSystemIterator );
-    assertTrue( classificationSystemIterator.hasNext() );
-    
-    //
-    final SFCatalogGroupSystem sfCatalogGroupSystem = sfClassificationSystem.catalogGroupSystem();
-    assertNotNull( sfCatalogGroupSystem.getCatalogGroupSystem() );
-    
-    //
-    final SFArticles sfArticles = sfCatalogGroupSystem.articles();
-    Iterator<Article> articleIterator = sfArticles.newArticleIterator();
-    assertNotNull( articleIterator );
-    List<Article> articleList = ListUtils.valueOf( articleIterator );
-    assertEquals( 100, articleList.size() );
-    
-    //
-    final SFArticleToCatalogGroupMap sfArticleToCatalogGroupMap = sfArticles.articleToCatalogGroupMap();
-    Iterator<ArticleToCatalogGroupMap> articleToCatalogGroupMapIterator = sfArticleToCatalogGroupMap.newArticleToCatalogGroupMapIterator();
-    assertNotNull( articleToCatalogGroupMapIterator );
-    assertTrue( articleToCatalogGroupMapIterator.hasNext() );
-    sfArticleToCatalogGroupMap.close();
-    
+    System.out.println( durationCapture.calculateIntervalStatisticLogMessage() );
   }
 }
