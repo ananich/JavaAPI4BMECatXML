@@ -49,24 +49,30 @@ import org.omnaest.api4bmecatxml.bmecat12.utils.CloningHelper;
 public class BMECat12
 {
   /* ********************************************** Constants ********************************************** */
-  public static final String NAMESPACE       = "http://www.bmecat.org/bmecat/1.2/bmecat_new_catalog";
+  public static final String  NAMESPACE       = "http://www.bmecat.org/bmecat/1.2/bmecat_new_catalog";
+  private static final String VERSION_DEFAULT = "1.2";
   /* ********************************************** Variables ********************************************** */
+  
+  @Size(max = 10)
+  @XmlAttribute(name = "version")
+  private String              version         = BMECat12.VERSION_DEFAULT;
+  
   @NotNull
   @Valid
   @XmlElement(name = "HEADER")
-  private Header             header          = null;
+  private Header              header          = null;
   
   @Valid
   @XmlElement(name = "T_NEW_CATALOG")
-  private TNewCatalog        tNewCatalog     = null;
+  private TNewCatalog         tNewCatalog     = null;
   
   @Valid
   @XmlElement(name = "T_UPDATE_PRODUCTS")
-  private TUpdateProducts    tUpdateProducts = null;
+  private TUpdateProducts     tUpdateProducts = null;
   
   @Valid
   @XmlElement(name = "T_UPDATE_PRICES")
-  private TUpdatePrices      tUpdatePrices   = null;
+  private TUpdatePrices       tUpdatePrices   = null;
   
   /* ********************************************** Classes/Interfaces ********************************************** */
   
@@ -5670,7 +5676,9 @@ public class BMECat12
   public String toString()
   {
     StringBuilder builder = new StringBuilder();
-    builder.append( "BMECat12 [header=" );
+    builder.append( "BMECat12 [version=" );
+    builder.append( this.version );
+    builder.append( ", header=" );
     builder.append( this.header );
     builder.append( ", tNewCatalog=" );
     builder.append( this.tNewCatalog );
@@ -5696,5 +5704,16 @@ public class BMECat12
   public BMECat12 clone()
   {
     return CloningHelper.clone( this );
+  }
+  
+  public String getVersion()
+  {
+    return this.version;
+  }
+  
+  public BMECat12 setVersion( String version )
+  {
+    this.version = version;
+    return this;
   }
 }

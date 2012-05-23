@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -37,7 +38,10 @@ import org.omnaest.api4bmecatxml.bmecat12.model.BMECat12.TBase.ClassificationSys
 import org.omnaest.api4bmecatxml.bmecat12.model.BMECat12.TBase.FeatureSystem;
 import org.omnaest.utils.events.exception.ExceptionHandler;
 import org.omnaest.utils.events.exception.basic.ExceptionHandlerEPrintStackTrace;
+import org.omnaest.utils.events.exception.basic.ExceptionHandlerIgnoring;
+import org.omnaest.utils.structure.container.ByteArrayContainer;
 import org.omnaest.utils.xml.JAXBXMLHelper;
+import org.omnaest.utils.xml.JAXBXMLHelper.MarshallingConfiguration;
 import org.omnaest.utils.xml.JAXBXMLHelper.UnmarshallingConfiguration;
 import org.omnaest.utils.xml.JAXBXMLHelper.UnmarshallingConfiguration.Configurator;
 import org.omnaest.utils.xml.XMLIteratorFactory;
@@ -342,7 +346,7 @@ public class BMECat12Manager
   }
   
   /**
-   * Stores a given {@link BMECat12} instance to the given {@link OutputStream}
+   * Similar to {@link #storeTo(OutputStream, BMECat12, ExceptionHandler)}
    * 
    * @param outputStream
    *          {@link OutputStream}
@@ -351,7 +355,37 @@ public class BMECat12Manager
    */
   public static void storeTo( OutputStream outputStream, BMECat12 bmeCat12 )
   {
-    JAXBXMLHelper.storeObjectAsXML( bmeCat12, outputStream );
+    ExceptionHandler exceptionHandler = new ExceptionHandlerIgnoring();
+    storeTo( outputStream, bmeCat12, exceptionHandler );
+  }
+  
+  /**
+   * Stores a given {@link BMECat12} instance to the given {@link OutputStream}
+   * 
+   * @param outputStream
+   *          {@link OutputStream}
+   * @param bmeCat12
+   *          {@link BMECat12}
+   * @param exceptionHandler
+   *          {@link ExceptionHandler}
+   */
+  public static void storeTo( OutputStream outputStream, BMECat12 bmeCat12, ExceptionHandler exceptionHandler )
+  {
+    //
+    final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE BMECAT SYSTEM \"bmecat_new_catalog_1_2.dtd\" []>\n";
+    new ByteArrayContainer( xmlHeader ).writeTo( outputStream );
+    final MarshallingConfiguration marshallingConfiguration = new MarshallingConfiguration().setConfigurator( new MarshallingConfiguration.Configurator()
+                                                                                                              {
+                                                                                                                @Override
+                                                                                                                public void configure( Marshaller marshaller ) throws Exception
+                                                                                                                {
+                                                                                                                  marshaller.setProperty( Marshaller.JAXB_FRAGMENT,
+                                                                                                                                          true );
+                                                                                                                }
+                                                                                                                
+                                                                                                              } )
+                                                                                            .setExceptionHandler( exceptionHandler );
+    JAXBXMLHelper.storeObjectAsXML( bmeCat12, outputStream, marshallingConfiguration );
   }
   
   /**
