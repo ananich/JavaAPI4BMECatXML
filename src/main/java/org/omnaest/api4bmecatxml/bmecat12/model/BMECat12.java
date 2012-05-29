@@ -3037,6 +3037,9 @@ public class BMECat12
         }
         
         /**
+         * Links the current {@link CatalogStructure} to the given {@link CatalogGroupSystem}.<br>
+         * Sets the {@link #setParentId(String)} to "0" and the {@link #setGroupId(String)} to "1", since BMECat specifies this.
+         * 
          * @param catalogGroupSystem
          *          {@link CatalogGroupSystem}
          * @return
@@ -3048,6 +3051,8 @@ public class BMECat12
           {
             catalogGroupSystem.add( this );
             this.setType( Type.root );
+            this.setGroupId( "1" );
+            this.setParentId( "0" );
           }
           
           //
