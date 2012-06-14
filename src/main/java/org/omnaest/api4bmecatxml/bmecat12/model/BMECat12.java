@@ -80,29 +80,32 @@ public class BMECat12
   @XmlAccessorType(XmlAccessType.FIELD)
   public static class Header
   {
-    /* ********************************************** Variables ********************************************** */
+    /* ************************************************** Constants *************************************************** */
+    public static final String GENERATOR_INFO_DEFAULT = "https://github.com/omnaest/JavaAPI4BMECatXML";
+    
+    /* ************************************** Variables / State (internal/hiding) ************************************* */
     
     @XmlElement(name = "GENERATOR_INFO")
-    private String          generatorInfo = null;
+    private String             generatorInfo          = Header.GENERATOR_INFO_DEFAULT;
     
     @NotNull
     @Valid
     @XmlElement(name = "CATALOG")
-    private Catalog         catalog       = null;
+    private Catalog            catalog                = null;
     
     @NotNull
     @Valid
     @XmlElement(name = "BUYER")
-    private Buyer           buyer         = null;
+    private Buyer              buyer                  = null;
     
     @Valid
     @XmlElement(name = "AGREEMENT")
-    private List<Agreement> agreementList = null;
+    private List<Agreement>    agreementList          = null;
     
     @NotNull
     @Valid
     @XmlElement(name = "SUPPLIER")
-    private Supplier        supplier      = null;
+    private Supplier           supplier               = null;
     
     /* ********************************************** Classes/Interfaces ********************************************** */
     @XmlAccessorType(XmlAccessType.FIELD)
