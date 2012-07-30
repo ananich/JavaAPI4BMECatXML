@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.omnaest.utils</groupId>
             <artifactId>utils-apl-derived-core</artifactId>
-            <version>0.1.15-SNAPSHOT</version>
+            <version>0.1.17</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

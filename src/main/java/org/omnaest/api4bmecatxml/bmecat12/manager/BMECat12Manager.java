@@ -371,9 +371,26 @@ public class BMECat12Manager
    */
   public static void storeTo( OutputStream outputStream, BMECat12 bmeCat12, ExceptionHandler exceptionHandler )
   {
+    final String encoding = "utf-8";
+    storeTo( outputStream, encoding, bmeCat12, exceptionHandler );
+  }
+  
+  /**
+   * Similar to {@link #storeTo(OutputStream, BMECat12)}
+   * 
+   * @param outputStream
+   *          {@link OutputStream}
+   * @param encoding
+   * @param bmeCat12
+   *          {@link BMECat12}
+   * @param exceptionHandler
+   *          {@link ExceptionHandler}
+   */
+  public static void storeTo( OutputStream outputStream, String encoding, BMECat12 bmeCat12, ExceptionHandler exceptionHandler )
+  {
     //
-    final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE BMECAT SYSTEM \"bmecat_new_catalog_1_2.dtd\" []>\n";
-    new ByteArrayContainer( xmlHeader ).writeTo( outputStream );
+    final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!DOCTYPE BMECAT SYSTEM \"bmecat_new_catalog_1_2.dtd\">\r\n";
+    new ByteArrayContainer().copyFrom( xmlHeader, encoding ).writeTo( outputStream );
     final MarshallingConfiguration marshallingConfiguration = new MarshallingConfiguration().setConfigurator( new MarshallingConfiguration.Configurator()
                                                                                                               {
                                                                                                                 @Override
@@ -384,8 +401,10 @@ public class BMECat12Manager
                                                                                                                 }
                                                                                                                 
                                                                                                               } )
-                                                                                            .setExceptionHandler( exceptionHandler );
+                                                                                            .setExceptionHandler( exceptionHandler )
+                                                                                            .setEncoding( encoding );
     JAXBXMLHelper.storeObjectAsXML( bmeCat12, outputStream, marshallingConfiguration );
+    
   }
   
   /**
