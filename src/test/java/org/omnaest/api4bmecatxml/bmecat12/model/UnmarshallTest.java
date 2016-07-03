@@ -13,4 +13,11 @@ public class UnmarshallTest {
 		assertEquals("Supplier 1", xml.getHeader().getSupplier().getSupplierName());
 	}
 
+	@Test
+	public void smokeTest2() {
+		BMECat12 xml = BMECat12Manager.loadFrom(getClass().getResourceAsStream("bmecat2.xml"));
+		assertNotNull(xml);
+		assertEquals("Supplier 1", xml.getHeader().getSupplier().getSupplierName());
+	}
+
 }
